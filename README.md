@@ -54,42 +54,83 @@ root/
 	├── part1.trace       	-- part1 trace file
 	└── Makefile		-- Makefile
 ├── part2/
-	├── src/           	-- source files
+	├── my_timer.c        	-- my_timer C file
 	└── Makefile		-- Makefile
 ├── part3/        
-	├── src/           	-- source files
+	├── elevator.c          -- elevator C file
 	├── Makefile 		-- Makefile
 	└── syscalls.c		-- syscalls
-├── Makefile
 └── README.md
 ```
 ## How to Compile & Execute
 
 ### Requirements
-- **Compiler**: e.g., `gcc` for C/C++, `rustc` for Rust.
-- **Dependencies**: List any libraries or frameworks necessary (rust only).
+- **Compiler**: `gcc` for C
+- **Dependencies**: N/A
 
 ### Compilation
-For a C/C++ example:
+### PART 1
+Run this command:
 ```bash
 make
 ```
-This will build the executable in ...
+This will build empty.o, part1.o, executables empty, and part1
 ### Execution
 ```bash
-make run
+strace -o empty.trace ./empty
+strace -o part1.trace ./part1
 ```
-This will run the program ...
+This will run the program empty and part1
+### Reading the Traces
+```bash
+cat empty.trace
+cat part1.trace
+```
+This will read out the system calls made in each file
+
+### PART 2
+Run this command:
+```bash
+make
+```
+This will create the module my_timer.ko
+Then run this command:
+```bash
+sudo insmod my_timer.ko
+```
+This will install the module into the kernel
+Finally, run this command:
+```bash
+cat /proc/timer
+```
+To see the current time. Multiple runs will yield an additional element titled: "elapsed time"
+To uninstall the module, run:
+```bash
+sudo rmmod my_timer.ko
+```
+
+### PART 3
+Run this command:
+```bash
+make
+```
+This will create the elevator.ko module
+To install the module, run:
+```bash
+sudo insmod elevator.ko
+```
+This will install the elevator module into the kernel
+To watch the elevator module, run:
+```bash
+watch -n1 cat /proc/elevator
+```
+Finally, to uninstall the module, run:
+```bash
+sudo rmmod elevator.ko
+```
 
 ## Bugs
-- **Bug 1**: This is bug 1.
-- **Bug 2**: This is bug 2.
-- **Bug 3**: This is bug 3.
-
-## Extra Credit
-- **Extra Credit 1:**: [Extra Credit Option]
-- **Extra Credit 2:**: [Extra Credit Option]
-- **Extra Credit 3:**: [Extra Credit Option]
+- **Bug 1**: State will not update to Loading when placing persons into elevator after traveling Up on rare occasions.
 
 ## Considerations
-[Description]
+Producer and Consumer files are not included in repository. To run elevator make sure you have those files on your device to add people and start/stop elevator.
